@@ -145,6 +145,9 @@ void* test(void* thread)
 
     THREAD_INIT(thread_id);
 	PF_INIT(3, SSPFD_NUM_ENTRIES, thread_id);
+#ifdef RELAXATION_TIMER_ANALYSIS
+	if (thread_id == 0) init_relaxation_analysis_shared(num_threads);
+#endif
 
     uint64_t my_putting_count = 0;
 	uint64_t my_removing_count = 0;

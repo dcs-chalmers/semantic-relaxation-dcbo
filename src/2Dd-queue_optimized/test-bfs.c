@@ -145,6 +145,11 @@ void *test(void *thread)
 
     THREAD_INIT(thread_id);
     PF_INIT(3, SSPFD_NUM_ENTRIES, thread_id);
+#ifdef RELAXATION_TIMER_ANALYSIS
+	if (thread_id == 0) init_relaxation_analysis_shared(num_threads);
+    barrier_cross(&barrier);
+	init_relaxation_analysis_local(thread_id);
+#endif
 
     uint64_t my_putting_count = 0;
     uint64_t my_removing_count = 0;
@@ -155,7 +160,13 @@ void *test(void *thread)
     seeds = seed_rand();
     RR_INIT(thread_id);
     DS_HANDLE handle = DS_REGISTER(td->set, thread_id);
+
+    if (thread_id == 0) DS_ADD(handle, root, root);
+	td->g->distances[root] = 0;
+
     barrier_cross(&barrier);
+
+
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
     start_times[thread_id] = (uint64_t)ts.tv_sec * 1e9 + ts.tv_nsec;
@@ -301,8 +312,6 @@ int main(int argc, char **argv)
     thread_data_t *tds = (thread_data_t *)malloc(num_threads * sizeof(thread_data_t));
 
     active_threads = num_threads;
-    g->distances[root] = 0;
-    DS_ADD(set, root, root);
 
     long t;
     for (t = 0; t < num_threads; t++)
