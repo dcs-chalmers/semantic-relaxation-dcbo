@@ -6,7 +6,7 @@
 
 #ifdef RELAXATION_TIMER_ANALYSIS
 #include "relaxation_analysis_timestamps.c"
-uint64_t enq_timestamp, deq_timestamp;
+__thread uint64_t enq_timestamp, deq_timestamp;
 #define ENQ_TIMESTAMP (enq_timestamp = get_timestamp())
 #define DEQ_TIMESTAMP (deq_timestamp = get_timestamp())
 #elif RELAXATION_ANALYSIS
@@ -387,7 +387,7 @@ static void *deq_slow(queue_t *q, handle_t *th, long id) {
     long i = -deq->idx;
     cell_t *c = find_cell(&th->Dp, i, th);
     void *val = c->val;
-    
+
     if (val != TOP && val != BOT) add_relaxed_deq(val);
 
 #ifdef RECORD

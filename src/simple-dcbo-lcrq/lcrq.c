@@ -15,7 +15,7 @@
 
 // Want timers at FAA increments and not with the normal CAE
 #ifdef RELAXATION_TIMER_ANALYSIS
-uint64_t enq_timestamp, deq_timestamp;
+__thread uint64_t enq_timestamp, deq_timestamp;
 #define ENQ_TIMESTAMP (enq_timestamp = get_timestamp())
 #define DEQ_TIMESTAMP (deq_timestamp = get_timestamp())
 #else
