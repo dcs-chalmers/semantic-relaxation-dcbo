@@ -365,9 +365,9 @@ int enqueue_wrap(queue_t *q, sval_t v) {
   return 1;
 }
 
-int dequeue_wrap(queue_t *q) {
+sval_t dequeue_wrap(queue_t *q) {
   int64_t val = (int64_t) dequeue_(q, &thread_handle);
-  if (val != -1) return val;
+  if (val != -1) return (sval_t) val;
   return 0;
 }
 
