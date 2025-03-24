@@ -22,13 +22,11 @@ extern __thread handle_t handle;
 
 // Expose functions
 int enqueue_wrap(queue_t *q, handle_t *th, sval_t v);
-int dequeue_wrap(queue_t *q, handle_t *th);
+sval_t dequeue_wrap(queue_t *q, handle_t *th);
 uint64_t lcrq_queue_size(queue_t *q);
 uint64_t lcrq_enq_count(queue_t *q);
 uint64_t lcrq_deq_count(queue_t *q);
 uint64_t lcrq_tail_version(queue_t *q);
-
-int dequeue_wrap(queue_t *q, handle_t *th);
 
 /* End of interface */
 
